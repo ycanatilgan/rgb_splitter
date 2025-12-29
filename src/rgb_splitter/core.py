@@ -95,6 +95,9 @@ def _process_single_file_extraction(args):
                 # History
                 new_header.add_history(f"[{process_date}] CFA SPLIT PROCESS APPLIED")
                 new_header.add_history("Method: Superpixel Extraction (No Interpolation)")
+
+                new_header.add_history("Software Ref: https://github.com/ycanatilgan/rgb_splitter")
+                
                 new_header.add_history(f"Channel: {channel_name} extracted from RGGB pattern")
                 if channel_name == "G":
                     new_header.add_history("Note: Green channel is average of G1 and G2 pixels")
