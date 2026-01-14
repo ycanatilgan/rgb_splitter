@@ -17,13 +17,33 @@ This process reduces the image resolution by half (width/2, height/2) but preser
 ### Installation
 Prerequisites: Python 3.10+
 
-1. Clone or download this repository.
-2. Navigate to the project root directory.
-3. Install using pip:
+### Dependencies
+- numpy>=1.23
+- astropy>=5.3
+- tqdm>=4.66
+
+You can install the package directly from GitHub or from source.
+
+#### Option 1: Install from GitHub (Recommended)
+You can install the latest version directly using pip:
 
 ```bash
-pip install .
+pip install git+https://github.com/ycanatilgan/rgb_splitter.git
 ```
+
+#### Option 2: Install from Source
+1. Clone or download this repository.
+   ```bash
+   git clone https://github.com/ycanatilgan/rgb_splitter.git
+   ```
+2. Navigate to the project directory.
+   ```bash
+   cd rgb_splitter
+   ```
+3. Install using pip:
+   ```bash
+   pip install .
+   ```
 
 ### Usage
 
@@ -84,13 +104,33 @@ Bu işlem görüntü çözünürlüğünü yarıya düşürür (genişlik/2, yü
 ### Kurulum
 Gereksinimler: Python 3.10+
 
-1. Bu projeyi indirin.
-2. Proje ana dizinine gidin.
-3. pip ile kurulumu yapın:
+### Bağımlılıklar (Dependencies)
+- numpy>=1.23
+- astropy>=5.3
+- tqdm>=4.66
+
+Paketi doğrudan GitHub üzerinden veya kaynak koddan kurabilirsiniz.
+
+#### Seçenek 1: GitHub Üzerinden Kurulum (Önerilen)
+En güncel sürümü pip kullanarak doğrudan kurabilirsiniz:
 
 ```bash
-pip install .
+pip install git+https://github.com/ycanatilgan/rgb_splitter.git
 ```
+
+#### Seçenek 2: Kaynak Koddan Kurulum
+1. Projeyi klonlayın veya indirin.
+   ```bash
+   git clone https://github.com/ycanatilgan/rgb_splitter.git
+   ```
+2. Proje dizinine gidin.
+   ```bash
+   cd rgb_splitter
+   ```
+3. pip ile kurulumu yapın:
+   ```bash
+   pip install .
+   ```
 
 ### Kullanım
 
