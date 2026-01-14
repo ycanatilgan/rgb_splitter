@@ -5,7 +5,7 @@ from .core import run
 
 def main():
     parser = argparse.ArgumentParser(
-        prog="rgb-splitter",
+        prog="rgb-split",
         description="Split RGGB CFA FITS files into R/G/B FITS planes (superpixel, no interpolation).",
     )
     parser.add_argument("--input", "-i", default="./data", help="Input directory (default: ./data)")

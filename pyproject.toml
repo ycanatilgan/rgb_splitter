@@ -18,7 +18,7 @@ dependencies = [
 ]
 
 [project.scripts]
-rgb-splitter = "rgb_splitter.cli:main"
+rgb-split = "rgb_splitter.cli:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
