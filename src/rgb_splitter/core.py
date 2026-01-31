@@ -87,7 +87,7 @@ def _process_single_file_extraction(args):
                 new_header.add_history("Method: Superpixel Extraction (No Interpolation)")
 
                 new_header.add_history("Software Ref: https://github.com/ycanatilgan/rgb_splitter")
-                
+
                 new_header.add_history(f"Channel: {channel_name} extracted from RGGB pattern")
                 if channel_name == "G":
                     new_header.add_history("Note: Green channel is average of G1 and G2 pixels")
@@ -100,33 +100,65 @@ def _process_single_file_extraction(args):
         return f"ERROR: {filename} - {str(e)}"
 
 
+def _is_fits_file(path: str) -> bool:
+    p = path.lower()
+    # Yaygın uzantılar: .fit, .fits ve sık görülen sıkıştırılmış türevleri
+    return p.endswith((".fit", ".fits", ".fit.gz", ".fits.gz", ".fit.fz", ".fits.fz"))
+
+
+def _collect_files(input_path: str) -> tuple[list[str], str]:
+    """
+    input_path klasörse: içindeki FITS dosyalarını (recursive) topla.
+    input_path dosyaysa: sadece onu döndür.
+    return: (files, input_root_dir)
+    """
+    input_path = os.path.abspath(input_path)
+
+    if os.path.isfile(input_path):
+        if not _is_fits_file(input_path):
+            return ([], os.path.dirname(input_path))
+        return ([input_path], os.path.dirname(input_path))
+
+    # klasör
+    patterns = ["*.fit", "*.fits", "*.fit.gz", "*.fits.gz", "*.fit.fz", "*.fits.fz"]
+    files: list[str] = []
+    for pat in patterns:
+        files.extend(glob.glob(os.path.join(input_path, "**", pat), recursive=True))
+
+    files = [f for f in files if os.path.isfile(f) and not f.endswith("summary.txt")]
+    return (files, input_path)
+
+
 def run(input_dir: str, output_dir: str, workers: int | None = None) -> int:
     """
     Ana işlemi çalıştırır. 0: başarılı, 1: hatalı.
+    input_dir parametresi artık hem klasör hem tekil dosya yolu alabilir.
     """
-    input_dir = os.path.abspath(input_dir)
+    input_path = os.path.abspath(input_dir)
     output_dir = os.path.abspath(output_dir)
 
     if workers is None:
         cpu = os.cpu_count() or 1
         workers = max(1, cpu - 1)
 
+    files, input_root_dir = _collect_files(input_path)
+
     print("--- RGB SPLITTER (CLI) ---")
-    print(f"Input:  {input_dir}")
+    print(f"Input:  {input_path}")
     print(f"Output: {output_dir}")
     print(f"Workers: {workers}")
-
-    files = glob.glob(os.path.join(input_dir, "**", "*.fit*"), recursive=True)
-    files = [f for f in files if os.path.isfile(f) and not f.endswith("summary.txt")]
-
     print(f"Toplam {len(files)} dosya işlenecek.")
+
+    if len(files) == 0:
+        print("Uygun FITS dosyası bulunamadı. (.fit / .fits / .fit.gz / .fits.gz / .fit.fz / .fits.fz)")
+        return 1
 
     start_time = time.time()
 
     results = {"OK": 0, "SKIPPED": 0, "ERROR": 0}
     errors: list[str] = []
 
-    tasks = [(f, input_dir, output_dir) for f in files]
+    tasks = [(f, input_root_dir, output_dir) for f in files]
 
     with ProcessPoolExecutor(max_workers=workers) as executor:
         futures = list(

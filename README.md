@@ -12,10 +12,19 @@ Unlike traditional de-mosaicing algorithms that interpolate pixel values to main
 - **Green:** Average of top-right and bottom-left pixels
 - **Blue:** Bottom-right pixel
 
-This process reduces the image resolution by half (width/2, height/2) but preserves the raw radiometric data of the pixels without introducing interpolation artifacts. It also automatically updates the FITS header WCS (World Coordinate System) keywords defined in the header to match the new geometry.
+This process reduces the image resolution by half (width/2, height/2) but preserves the raw radiometric data of the pixels without introducing interpolation artifacts.
 
 ### Installation
-Prerequisites: Python 3.10+
+Prerequisites:
+- **Python 3.10+**
+- **Git** (Required for installation)
+
+#### Checking for Git
+To check if Git is installed, run the following command in your terminal:
+```bash
+git --version
+```
+If it is not installed, you can download it from [git-scm.com](https://git-scm.com/).
 
 ### Dependencies
 - numpy>=1.23
@@ -50,23 +59,33 @@ pip install git+https://github.com/ycanatilgan/rgb_splitter.git
 Run the tool from your terminal using the `rgb-split` command.
 
 #### Basic Usage
-Process all FITS files in the `./data` directory (recursive). The output will be saved in `./data/rgb_split` by default.
+Process all FITS files in a directory (recursive) or a single file.
 
+**Positional Arguments (New):**
 ```bash
-rgb-split --input ./data
+# Process directory (Output defaults to <input>/rgb_split)
+rgb-split ./data
+
+# Process directory with custom output
+rgb-split ./data ./output
+
+# Process single file
+rgb-split ./data/image.fits
+
+# Quick syntax (Input=Output)
+rgb-split ./data=./output
 ```
 
-#### Custom Output Directory
-Specify a custom destination for the processed files.
+#### Supported File Extensions
+The tool supports standard and compressed FITS files:
+- `.fit`, `.fits`
+- `.fit.gz`, `.fits.gz`
+- `.fit.fz`, `.fits.fz`
 
+#### Legacy Flags
+Old-style flags are still supported for backward compatibility:
 ```bash
-rgb-split --input ./raw_images --output ./processed_images
-```
-
-#### Parallel Processing
-Speed up processing by specifying the number of worker processes (threads). By default, it uses `CPU Count - 1`.
-
-```bash
+rgb-split --input ./data --output ./output
 rgb-split -i ./data -w 8
 ```
 
@@ -102,7 +121,16 @@ Pikselleri enterpole ederek (uydurarak) çözünürlüğü korumaya çalışan g
 Bu işlem görüntü çözünürlüğünü yarıya düşürür (genişlik/2, yükseklik/2), ancak interpolasyon hataları (artifact) oluşturmadan ham piksel verisini korur. Ayrıca FITS başlığındaki WCS (Dünya Koordinat Sistemi) verilerini yeni geometriye uygun olarak otomatik günceller.
 
 ### Kurulum
-Gereksinimler: Python 3.10+
+Gereksinimler:
+- **Python 3.10+**
+- **Git** (Kurulum için gereklidir)
+
+#### Git Kontrolü
+Bilgisayarınızda Git'in yüklü olup olmadığını kontrol etmek için terminalde şu komutu çalıştırın:
+```bash
+git --version
+```
+Eğer yüklü değilse, [git-scm.com](https://git-scm.com/) adresinden indirip kurabilirsiniz.
 
 ### Bağımlılıklar (Dependencies)
 - numpy>=1.23
@@ -137,23 +165,33 @@ pip install git+https://github.com/ycanatilgan/rgb_splitter.git
 Terminalinizden `rgb-split` komutunu kullanarak aracı çalıştırabilirsiniz.
 
 #### Temel Kullanım
-`./data` klasöründeki tüm FITS dosyalarını (alt klasörler dahil) işler. Çıktılar varsayılan olarak `./data/rgb_split` klasörüne kaydedilir.
+Bir klasördeki tüm FITS dosyalarını (recursive) veya tek bir dosyayı işleyebilirsiniz.
 
+**Doğrudan Argüman Kullanımı (Yeni):**
 ```bash
-rgb-split --input ./data
+# Klasör işleme (Çıktı varsayılanı: <girdi>/rgb_split)
+rgb-split ./data
+
+# Özel çıktı klasörü belirterek
+rgb-split ./data ./cikti
+
+# Tek dosya işleme
+rgb-split ./data/goruntu.fits
+
+# Hızlı kullanım (Girdi=Çıktı)
+rgb-split ./data=./cikti
 ```
 
-#### Özel Çıktı Klasörü Belirleme
-İşlenen dosyaların kaydedileceği yeri kendiniz belirleyebilirsiniz.
+#### Desteklenen Dosya Uzantıları
+Araç standart ve sıkıştırılmış FITS dosyalarını destekler:
+- `.fit`, `.fits`
+- `.fit.gz`, `.fits.gz`
+- `.fit.fz`, `.fits.fz`
 
+#### Eski Parametreler (Legacy)
+Eski kullanım şekli (flag kullanımı) geriye dönük uyumluluk için hala desteklenmektedir:
 ```bash
-rgb-split --input ./ham_goruntuler --output ./islenmis_goruntuler
-```
-
-#### Paralel İşleme (Hızlandırma)
-İşlemci çekirdeklerini kullanarak dönüştürme işlemini hızlandırabilirsiniz. Varsayılan olarak `Toplam Çekirdek - 1` kadar işlemci kullanılır.
-
-```bash
+rgb-split --input ./data --output ./cikti
 rgb-split -i ./data -w 8
 ```
 
