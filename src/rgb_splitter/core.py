@@ -75,16 +75,6 @@ def _process_single_file_extraction(args):
             for channel_name, (img_data, out_path) in channels.items():
                 new_header = header.copy()
 
-                # WCS/geometri güncellemesi
-                if "CRPIX1" in new_header:
-                    new_header["CRPIX1"] /= 2
-                if "CRPIX2" in new_header:
-                    new_header["CRPIX2"] /= 2
-                if "CDELT1" in new_header:
-                    new_header["CDELT1"] *= 2
-                if "CDELT2" in new_header:
-                    new_header["CDELT2"] *= 2
-
                 # Filtre bilgisi
                 new_header["FILTER"] = (channel_name, "Extracted RGB Channel")
 
