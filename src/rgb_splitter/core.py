@@ -64,6 +64,15 @@ def _process_single_file_extraction(args):
             if "CREATOR" in header and "Python Science Splitter" in str(header.get("CREATOR", "")):
                 return f"ERROR: {filename} - File already processed by RGB Splitter."
 
+            # Otomatik Kırpma (Auto-Crop for Odd Dimensions)
+            # Bayer deseni 2x2 (RGGB) olduğu için boyutların çift sayı olması gerekir.
+            # Eğer boyutlar tek ise, son satırı/sütunu atarak çift sayıya düşür.
+            h, w = data.shape
+            if h % 2 != 0 or w % 2 != 0:
+                h_new = h - (h % 2)
+                w_new = w - (w % 2)
+                data = data[:h_new, :w_new]
+
             original_dtype = data.dtype
 
             # Superpixel extraction (RGGB)
