@@ -17,6 +17,7 @@ def main():
         description="Split RGGB CFA FITS files into R/G/B FITS planes (superpixel, no interpolation).",
         epilog=(
             "Examples:\n"
+            "  rgb-split                  (Process current directory)\n"
             "  rgb-split ./data\n"
             "  rgb-split ./data ./out\n"
             "  rgb-split ./data/example.fits\n"
@@ -31,8 +32,8 @@ def main():
     parser.add_argument(
         "input",
         nargs="?",
-        default="./data",
-        help="Input path (directory OR a single .fit/.fits). You can also pass INPUT=OUTPUT here.",
+        default=".",
+        help="Input path (directory OR a single .fit/.fits). Defaults to current directory. You can also pass INPUT=OUTPUT here.",
     )
     parser.add_argument(
         "output",

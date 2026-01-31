@@ -63,7 +63,10 @@ Process all FITS files in a directory (recursive) or a single file.
 
 **Positional Arguments (New):**
 ```bash
-# Process directory (Output defaults to <input>/rgb_split)
+# Process current directory (Default)
+rgb-split
+
+# Process specific directory (Output defaults to <input>/rgb_split)
 rgb-split ./data
 
 # Process directory with custom output
@@ -169,6 +172,9 @@ Bir klasördeki tüm FITS dosyalarını (recursive) veya tek bir dosyayı işley
 
 **Doğrudan Argüman Kullanımı (Yeni):**
 ```bash
+# Bulunduğun klasörü işle (Varsayılan)
+rgb-split
+
 # Klasör işleme (Çıktı varsayılanı: <girdi>/rgb_split)
 rgb-split ./data
 
