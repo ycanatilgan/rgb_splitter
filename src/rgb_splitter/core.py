@@ -42,8 +42,28 @@ def _process_single_file_extraction(args):
             return "SKIPPED"
 
         with fits.open(filepath) as hdul:
-            data = hdul[0].data
-            header = hdul[0].header
+            # Standart FITS genelde 0'da veri barındırır.
+            # Sıkıştırılmış FITS (fpack/.fz) genelde 0'ı boş bırakır, veriyi 1'e koyar.
+            hdu = hdul[0]
+            if hdu.data is None and len(hdul) > 1:
+                hdu = hdul[1]
+
+            data = hdu.data
+            header = hdu.header
+
+            # Validation 1: Veri var mı?
+            if data is None:
+                return f"ERROR: {filename} - No data in Primary HDU."
+
+            # Validation 2: Boyut kontrolü (Sadece 2D CFA kabul ediyoruz)
+            # RGB birleşik dosyalar genellikle 3D (3, H, W) olur.
+            if data.ndim != 2:
+                return f"ERROR: {filename} - Expected 2D CFA image, found {data.ndim}D."
+
+            # Validation 3: Zaten bizim tarafımızdan bölünmüş mü?
+            if "CREATOR" in header and "Python Science Splitter" in str(header.get("CREATOR", "")):
+                return f"ERROR: {filename} - File already processed by RGB Splitter."
+
             original_dtype = data.dtype
 
             # Superpixel extraction (RGGB)
